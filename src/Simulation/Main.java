@@ -2,7 +2,7 @@ package Simulation;
 
 import java.util.ArrayList;
 
-public class Simulation 
+public class Main 
 {
 	public static void main(String[] args)
 	{
