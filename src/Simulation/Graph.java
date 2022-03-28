@@ -8,12 +8,14 @@ public class Graph<T>
 {
 	// the graph -- a set of vertices (String name mapped to Vertex instance)
 	private HashMap<T, Vertex> vertices;
+	private int sizeOfGrid;
 
 	/**
 	 * Constructs an empty graph.
 	 */
-	public Graph() 
+	public Graph(int sizeOfGrid) 
 	{
+		this.sizeOfGrid = sizeOfGrid;
 		vertices = new HashMap<T, Vertex>();
 	}
 
@@ -23,6 +25,14 @@ public class Graph<T>
 	public void clear()
 	{
 		vertices.clear();
+	}
+	
+	public void resetVisitedFlags()
+	{
+		for(T vertex: vertices.keySet())
+		{
+			vertices.get(vertex).hasBeenVisited = false;
+		}
 	}
 	
 	/**
@@ -152,23 +162,15 @@ public class Graph<T>
 				continue;
 			}
 			
-			if(vertices.get(vertex).column == 100)
+			if(vertices.get(vertex).column == sizeOfGrid)
 			{
-				for(T vertexName: vertices.keySet())
-				{
-					vertices.get(vertexName).hasBeenVisited = false;
-				}
 				return true;
 			}
 			
 			vertices.get(vertex).hasBeenVisited = true;
-			isPathAcross(vertex);
+			return isPathAcross(vertex);
 		}
 		
-		for(T vertex: vertices.keySet())
-		{
-			vertices.get(vertex).hasBeenVisited = false;
-		}
 		return false;
 	}
 	

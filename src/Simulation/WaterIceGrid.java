@@ -4,16 +4,24 @@ import java.util.ArrayList;
 
 public class WaterIceGrid 
 {
-	private Graph<String> graph = new Graph<String>();
-	private ArrayList<String> col1Vertices = new ArrayList<String>();
+	private int sizeOfGrid;
+	private Graph<String> graph;
+	private ArrayList<String> col1Vertices;
+	
+	public WaterIceGrid(int sizeOfGrid)
+	{
+		this.sizeOfGrid = sizeOfGrid;
+		graph = new Graph<String>(sizeOfGrid);
+		col1Vertices = new ArrayList<String>();
+	}
 	
 	public void buildRandomGrid()
 	{
 		graph.clear();
 			
-		for(int row = 1; row <= 100; ++row)
+		for(int row = 1; row <= sizeOfGrid; ++row)
 		{
-			for(int col = 1; col <= 100; ++col)
+			for(int col = 1; col <= sizeOfGrid; ++col)
 			{
 				String currentVertex = row + "x" + col;
 				String leftVertex = row + "x" + (col-1);
@@ -55,6 +63,7 @@ public class WaterIceGrid
 				{
 					return true;
 				}
+				graph.resetVisitedFlags();
 			}
 		}
 		
@@ -71,6 +80,7 @@ public class WaterIceGrid
 				{
 					return true;
 				}
+				graph.resetVisitedFlags();
 			}
 		}
 		
