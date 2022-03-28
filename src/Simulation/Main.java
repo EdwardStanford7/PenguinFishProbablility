@@ -6,7 +6,7 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		int timesToLoop = 100000;
+		int timesToLoop = 10000;
 		
 		WaterIceGrid grid = new WaterIceGrid();
 		

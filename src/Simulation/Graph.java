@@ -25,6 +25,14 @@ public class Graph<T>
 	}
 
 	/**
+	 * Clears the graph.
+	 */
+	public void clear()
+	{
+		vertices.clear();
+	}
+	
+	/**
 	 * Getter for the number of vertices within the graph.
 	 */
 	public int getNumberVertices()
@@ -48,7 +56,7 @@ public class Graph<T>
 	 * @param name1 - generic type T name for source vertex
 	 * @param name2 - generic type T name for destination vertex
 	 */
-	public void addEdge(T name1, T name2, boolean vertex1IsIce, boolean vertex2IsIce, int col1, int col2)
+	public void addEdge(T name1, T name2, boolean srcVertexIsIce, int srcVertexcol)
 	{
 		Vertex vertex1;
 		// if vertex already exists in graph, get its object
@@ -59,7 +67,7 @@ public class Graph<T>
 		// else, create a new object and add to graph
 		else 
 		{
-			vertex1 = new Vertex(name1, vertex1IsIce, col1);
+			vertex1 = new Vertex(name1, srcVertexIsIce, srcVertexcol);
 			vertices.put(name1, vertex1);
 		}
 
@@ -69,13 +77,24 @@ public class Graph<T>
 			vertex2 = vertices.get(name2);
 		}
 		else 
-		{
-			vertex2 = new Vertex(name2, vertex2IsIce, col2);
+		{			
+			boolean vertexIsIce;
+			if(Math.random() < .5)
+			{
+				vertexIsIce = true;
+			}
+			else
+			{
+				vertexIsIce = false;;
+			}
+			
+			vertex2 = new Vertex(name2, vertexIsIce, 1);
 			vertices.put(name2, vertex2);
 		}
 
 		// add new directed edge from vertex1 to vertex2
 		vertex1.addEdge(vertex2);
+		vertex2.addEdge(vertex1);
 	}
 	
 	/**
@@ -147,6 +166,11 @@ public class Graph<T>
 			
 			vertices.get(vertex).hasBeenVisited = true;
 			isPathAcross(vertex);
+		}
+		
+		for(T vertex: vertices.keySet())
+		{
+			vertices.get(vertex).hasBeenVisited = false;
 		}
 		
 		return false;
