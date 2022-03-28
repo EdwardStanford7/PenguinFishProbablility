@@ -4,13 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-/**
- * Represents a sparse, unweighted, directed graph (a set of vertices and a set of edges). 
- * The graph is generic.
- * 
- * @author Erin Parker & Edward Stanford & Sara Fong 
- * @version March 14, 2022
- */
 public class Graph<T> 
 {
 	// the graph -- a set of vertices (String name mapped to Vertex instance)
@@ -161,6 +154,10 @@ public class Graph<T>
 			
 			if(vertices.get(vertex).column == 100)
 			{
+				for(T vertexName: vertices.keySet())
+				{
+					vertices.get(vertexName).hasBeenVisited = false;
+				}
 				return true;
 			}
 			
@@ -172,7 +169,6 @@ public class Graph<T>
 		{
 			vertices.get(vertex).hasBeenVisited = false;
 		}
-		
 		return false;
 	}
 	
