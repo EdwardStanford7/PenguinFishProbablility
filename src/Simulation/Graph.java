@@ -1,10 +1,8 @@
 package Simulation;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Represents a sparse, unweighted, directed graph (a set of vertices and a set of edges). 
@@ -32,6 +30,14 @@ public class Graph<T>
 	public int getNumberVertices()
 	{
 		return vertices.size();
+	}
+	
+	/**
+	 * Getter for specific vertex within the graph.
+	 */
+	public Vertex getVertex(T vertexName)
+	{
+		return vertices.get(vertexName);
 	}
 	
 	/**
@@ -111,38 +117,15 @@ public class Graph<T>
 	}
 	
 	/**
-	 * Performs a depth first search to find a path from the given vertex to all other vertices.
+	 * Performs a depth first search to check if there is a path from the given vertex to the other end of the grid.
 	 * @param src the source vertex to start from.
-	 * @return a list of lists that each represent a path from the source vertex to another vertex.
+	 * @return true if a path exists, false otherwise.
 	 */
-	public List<List<T>> depthFirstSearch(T src)
-	{
-		List<List<T>> allPaths = new ArrayList<List<T>>();
-		List<T>	 currentPath = new ArrayList<T>();
-		
-		currentPath.add(src);
+	public boolean isPathAcross(T src)
+	{		
 		vertices.get(src).hasBeenVisited = true;
 		
-		depthFirstRecursive(allPaths, currentPath, src);
-		
-		for(T vertex: vertices.keySet())
-		{
-			vertices.get(vertex).hasBeenVisited = false;
-		}
-		
-		return allPaths;
-	}
-	
-	/**
-	 * Private recursive depth first search aogorithm.
-	 * @param allPaths a list of lists that each represent a path from the source vertex to another vertex.
-	 * @param currentPath a list that represents the current path from the source vertex.
-	 * @param visitedVertices a list that contains all vertices that have already been visited.
-	 * @param currentVertex
-	 */
-	private void depthFirstRecursive(List<List<T>> allPaths, List<T> currentPath, T currentVertex)
-	{	
-		Iterator<Edge> iterator = vertices.get(currentVertex).edges();
+		Iterator<Edge> iterator = vertices.get(src).edges();
 		
 		while(iterator.hasNext())
 		{
@@ -152,21 +135,21 @@ public class Graph<T>
 			{
 				continue;
 			}
-			if(vertices.get(currentVertex).isIce != vertices.get(vertex).isIce)
+			if(vertices.get(src).isIce != vertices.get(vertex).isIce)
 			{
 				continue;
 			}
 			
-			currentPath.add(vertex);
 			if(vertices.get(vertex).column == 100)
 			{
-				allPaths.add(List.copyOf(currentPath));
+				return true;
 			}
 			
 			vertices.get(vertex).hasBeenVisited = true;
-			depthFirstRecursive(allPaths, currentPath, vertex);
-			currentPath.remove(vertex);
-		}		
+			isPathAcross(vertex);
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -176,7 +159,7 @@ public class Graph<T>
 	 * @author Erin Parker & Edward Stanford & Sara Fong
 	 * @version March 14, 2022
 	 */
-	private class Vertex
+	public class Vertex
 	{
 		// used to id the Vertex
 		private T name;
@@ -200,7 +183,7 @@ public class Graph<T>
 			this.isIce = isIce;
 			this.column = column;
 		}
-
+		
 		/**
 		 * @return the object T used to identify this Vertex
 		 */
