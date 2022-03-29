@@ -95,9 +95,12 @@ public class Graph<T>
 			vertices.put(name2, vertex2);
 		}
 
-		// add new directed edge from vertex1 to vertex2
-		vertex1.addEdge(vertex2);
-		vertex2.addEdge(vertex1);
+		// add new undirected edge from vertex1 to vertex2
+		if(vertex1.isIce == vertex2.isIce)
+		{
+			vertex1.addEdge(vertex2);
+			vertex2.addEdge(vertex1);
+		}
 	}
 	
 	/**
@@ -138,12 +141,22 @@ public class Graph<T>
 		return result.toString();
 	}
 	
+	public boolean isPathAcross(T src)
+	{
+		if(vertices.get(src).column == numColumns)
+		{
+			return true;
+		}
+		
+		return isPathAcrossRecursive(src);
+	}
+	
 	/**
 	 * Performs a depth first search to check if there is a path from the given vertex to the other end of the grid.
 	 * @param src the source vertex to start from.
 	 * @return true if a path exists, false otherwise.
 	 */
-	public boolean isPathAcross(T src)
+	private boolean isPathAcrossRecursive(T src)
 	{		
 		vertices.get(src).hasBeenVisited = true;
 		
@@ -157,10 +170,6 @@ public class Graph<T>
 			{
 				continue;
 			}
-			if(vertices.get(src).isIce != vertices.get(vertex).isIce)
-			{
-				continue;
-			}
 			
 			if(vertices.get(vertex).column == numColumns)
 			{
@@ -168,7 +177,10 @@ public class Graph<T>
 			}
 			
 			vertices.get(vertex).hasBeenVisited = true;
-			return isPathAcross(vertex);
+			if(isPathAcross(vertex))
+			{
+				return true;
+			}
 		}
 		
 		return false;

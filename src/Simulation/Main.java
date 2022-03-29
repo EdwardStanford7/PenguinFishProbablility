@@ -6,9 +6,9 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		int timesToLoop = 1000;
+		int timesToLoop = 10000;
 		
-		WaterIceGrid grid = new WaterIceGrid(42, 49);
+		WaterIceGrid grid = new WaterIceGrid(2, 2);
 		
 		ArrayList<Character> data = new ArrayList<Character>();
 		
