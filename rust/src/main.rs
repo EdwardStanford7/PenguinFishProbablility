@@ -3,14 +3,15 @@
 */
 
 use rand::Rng;
-use std::iter;
 use std::collections::HashSet;
 use std::hash::Hash;
+use std::iter;
 
 /*
-    Using compile-time constants for the grid dimensions
-    and number of iterations
+    Compile-time constants
 */
+// Dimensions of the grid
+// The padded grid contains one additional initial and final row/col
 const ROWS: usize = 42;
 const COLS: usize = 49;
 const PAD_ROWS: usize = ROWS + 2;
@@ -22,7 +23,7 @@ const NUM_ITERS: usize = 1000000;
 const PROGRESS_STEP: usize = 1000;
 
 /*
-    DFS generic
+    Generic depth-first search
 */
 fn dfs<T, Src, Succ, Succs, Snk>(
     sources: Src,
@@ -74,15 +75,6 @@ impl Grid {
         self.0[i][j]
     }
 
-    // TODO -- these would be good to have
-    // Assert invariants (in debug mode)
-    // fn assert_invariant() {}
-    // Print grid as 0s and 1s
-    // fn print_grid() {}
-
-    // fn is_source(&self, i: usize, j: usize) -> bool {
-    //     j == 1 && self.cell(i, j)
-    // }
     fn is_sink(&self, _i: usize, j: usize) -> bool {
         j == COLS
     }
@@ -101,7 +93,7 @@ impl Grid {
             .filter(|&(r, c)| self.cell(r, c))
     }
 
-    // Check if the fish can get across on 'true' cells
+    // Check if the fish can get across swimming only on 'true' cells
     fn fish_friendly(&self) -> bool {
         dfs(
             self.sources(),
@@ -113,7 +105,7 @@ impl Grid {
 
 fn main() {
     println!("Running {} iterations for {} x {} grids", NUM_ITERS, ROWS, COLS);
-    println!("Example grid: {:?}", Grid::new_random().0);
+    // println!("Example grid: {:?}", Grid::new_random().0);
 
     let mut friendly: usize = 0;
     for i in 0..NUM_ITERS {
@@ -128,6 +120,8 @@ fn main() {
 
     println!(
         "The fish can swim across in {}/{} cases ({:.3}%).",
-        friendly, NUM_ITERS, (friendly as f64) * 100.0 / (NUM_ITERS as f64)
+        friendly,
+        NUM_ITERS,
+        (friendly as f64) * 100.0 / (NUM_ITERS as f64),
     );
 }
