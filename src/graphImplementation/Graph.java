@@ -1,4 +1,4 @@
-package Simulation;
+package graphImplementation;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,14 +33,6 @@ public class Graph<T>
 		{
 			vertices.get(vertex).hasBeenVisited = false;
 		}
-	}
-	
-	/**
-	 * Getter for the number of vertices within the graph.
-	 */
-	public int getNumberVertices()
-	{
-		return vertices.size();
 	}
 	
 	/**
@@ -104,43 +96,10 @@ public class Graph<T>
 	}
 	
 	/**
-	 * Generates the DOT encoding of this graph as string, which can be 
-	 * pasted into http://www.webgraphviz.com to produce a visualization.
+	 * Checks if there is a path from the src vertex across to any vertex in the last column of the grid.
+	 * @param src the starting vertex
+	 * @return true if there is a path across, false otherwise.
 	 */
-	public String generateDot() 
-	{
-		StringBuilder dot = new StringBuilder("digraph d {\n");
-		
-		// for every vertex 
-		for(Vertex v: vertices.values()) 
-		{
-			// for every edge
-			Iterator<Edge> edges = v.edges();
-			while(edges.hasNext()) 
-			{
-				dot.append("\t\"" + v.getName() + "\" -> \"" + edges.next() + "\"\n");
-			}
-			
-		}
-		
-		return dot.toString() + "}";
-	}
-	
-	/**
-	 * Generates a simple textual representation of this graph.
-	 */
-	public String toString() 
-	{
-		StringBuilder result = new StringBuilder();
-		
-		for(Vertex v: vertices.values()) 
-		{
-			result.append(v + "\n");
-		}
-		
-		return result.toString();
-	}
-	
 	public boolean isPathAcross(T src)
 	{
 		if(vertices.get(src).column == numColumns)
@@ -164,7 +123,7 @@ public class Graph<T>
 		
 		while(iterator.hasNext())
 		{
-			T vertex = iterator.next().getOtherVertex().getName();
+			T vertex = iterator.next().getOtherVertex().name;
 			
 			if(vertices.get(vertex).hasBeenVisited)
 			{
@@ -196,7 +155,7 @@ public class Graph<T>
 	public class Vertex
 	{
 		// used to id the Vertex
-		private T name;
+		public T name;
 		public boolean hasBeenVisited;
 		public boolean isIce;
 		public int column;
@@ -217,14 +176,6 @@ public class Graph<T>
 			this.isIce = isIce;
 			this.column = column;
 		}
-		
-		/**
-		 * @return the object T used to identify this Vertex
-		 */
-		public T getName() 
-		{
-			return name;
-		}
 
 		/**
 		 * Adds a directed edge from this Vertex to another.
@@ -242,20 +193,6 @@ public class Graph<T>
 		public Iterator<Edge> edges() 
 		{
 			return adj.iterator();
-		}
-
-		/**
-		 * Generates and returns a textual representation of this Vertex.
-		 */
-		public String toString() 
-		{
-			String s = "Vertex " + name + " adjacent to vertices ";
-			Iterator<Edge> itr = adj.iterator();
-			while(itr.hasNext())
-			{
-				s += itr.next() + "  ";
-			}
-			return s;
 		}
 	}
 	
@@ -292,14 +229,6 @@ public class Graph<T>
 		public Vertex getOtherVertex() 
 		{
 			return this.dst;
-		}
-
-		/**
-		 * Returns the name of the destination Vertex as a textual representation of this Edge.
-		 */
-		public String toString() 
-		{
-			return this.dst.getName().toString();
 		}
 	}
 }

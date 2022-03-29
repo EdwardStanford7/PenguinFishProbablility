@@ -1,4 +1,4 @@
-package Simulation;
+package graphImplementation;
 
 import java.util.ArrayList;
 

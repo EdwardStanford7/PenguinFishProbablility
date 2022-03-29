@@ -1,4 +1,4 @@
-package Simulation;
+package graphImplementation;
 
 import java.util.ArrayList;
 
@@ -6,9 +6,9 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		int timesToLoop = 10000;
+		int timesToLoop = 1000;
 		
-		WaterIceGrid grid = new WaterIceGrid(2, 2);
+		WaterIceGrid grid = new WaterIceGrid(42, 49);
 		
 		ArrayList<Character> data = new ArrayList<Character>();
 		
