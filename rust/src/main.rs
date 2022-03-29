@@ -1,0 +1,133 @@
+/*
+    Version of the problem in Rust
+*/
+
+use rand::Rng;
+use std::iter;
+use std::collections::HashSet;
+use std::hash::Hash;
+
+/*
+    Using compile-time constants for the grid dimensions
+    and number of iterations
+*/
+const ROWS: usize = 42;
+const COLS: usize = 49;
+const PAD_ROWS: usize = ROWS + 2;
+const PAD_COLS: usize = COLS + 2;
+
+// Number of iterations to run
+const NUM_ITERS: usize = 1000000;
+// Number of steps to display progress
+const PROGRESS_STEP: usize = 1000;
+
+/*
+    DFS generic
+*/
+fn dfs<T, Src, Succ, Succs, Snk>(
+    sources: Src,
+    get_succs: Succ,
+    is_sink: Snk,
+) -> bool
+where
+    T: Clone + Hash + Eq,
+    Src: Iterator<Item = T>,
+    Succ: Fn(&T) -> Succs,
+    Succs: Iterator<Item = T>,
+    Snk: Fn(&T) -> bool,
+{
+    let mut visited: HashSet<T> = HashSet::new();
+    let mut to_visit: Vec<T> = sources.collect();
+    while let Some(curr) = to_visit.pop() {
+        if visited.contains(&curr) {
+            continue;
+        } else if is_sink(&curr) {
+            return true;
+        } else {
+            visited.insert(curr.clone());
+            for next in get_succs(&curr) {
+                to_visit.push(next);
+            }
+        }
+    }
+    false
+}
+
+/*
+    Grid struct
+*/
+struct Grid([[bool; PAD_COLS]; PAD_ROWS]);
+impl Grid {
+    #[allow(clippy::needless_range_loop)]
+    fn new_random() -> Self {
+        let mut rng = rand::thread_rng();
+        let mut grid = [[false; PAD_COLS]; PAD_ROWS];
+        for row in 1..=ROWS {
+            for col in 1..=COLS {
+                grid[row][col] = rng.gen();
+            }
+        }
+        Self(grid)
+    }
+
+    fn cell(&self, i: usize, j: usize) -> bool {
+        self.0[i][j]
+    }
+
+    // TODO -- these would be good to have
+    // Assert invariants (in debug mode)
+    // fn assert_invariant() {}
+    // Print grid as 0s and 1s
+    // fn print_grid() {}
+
+    // fn is_source(&self, i: usize, j: usize) -> bool {
+    //     j == 1 && self.cell(i, j)
+    // }
+    fn is_sink(&self, _i: usize, j: usize) -> bool {
+        j == COLS
+    }
+    fn sources(&self) -> impl Iterator<Item = (usize, usize)> + '_ {
+        (1..=ROWS).map(|i| (i, 1)).filter(|&(i, j)| self.cell(i, j))
+    }
+    fn adjacencies(
+        &self,
+        i: usize,
+        j: usize,
+    ) -> impl Iterator<Item = (usize, usize)> + '_ {
+        iter::once((i - 1, j))
+            .chain(iter::once((i + 1, j)))
+            .chain(iter::once((i, j - 1)))
+            .chain(iter::once((i, j + 1)))
+            .filter(|&(r, c)| self.cell(r, c))
+    }
+
+    // Check if the fish can get across on 'true' cells
+    fn fish_friendly(&self) -> bool {
+        dfs(
+            self.sources(),
+            |&(i, j)| self.adjacencies(i, j),
+            |&(i, j)| self.is_sink(i, j),
+        )
+    }
+}
+
+fn main() {
+    println!("Running {} iterations for {} x {} grids", NUM_ITERS, ROWS, COLS);
+    println!("Example grid: {:?}", Grid::new_random().0);
+
+    let mut friendly: usize = 0;
+    for i in 0..NUM_ITERS {
+        if i % PROGRESS_STEP == 0 {
+            println!("Running iterations {}-{}...", i, i + PROGRESS_STEP - 1);
+        }
+        let grid = Grid::new_random();
+        if grid.fish_friendly() {
+            friendly += 1;
+        }
+    }
+
+    println!(
+        "The fish can swim across in {}/{} cases ({:.3}%).",
+        friendly, NUM_ITERS, (friendly as f64) * 100.0 / (NUM_ITERS as f64)
+    );
+}
