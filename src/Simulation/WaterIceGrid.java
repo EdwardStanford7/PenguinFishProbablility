@@ -4,14 +4,16 @@ import java.util.ArrayList;
 
 public class WaterIceGrid 
 {
-	private int sizeOfGrid;
+	private int numRows;
+	private int numColumns;
 	private Graph<String> graph;
 	private ArrayList<String> col1Vertices;
 	
-	public WaterIceGrid(int sizeOfGrid)
+	public WaterIceGrid(int numRows, int numColumns)
 	{
-		this.sizeOfGrid = sizeOfGrid;
-		graph = new Graph<String>(sizeOfGrid);
+		this.numRows = numRows;
+		this.numColumns = numColumns;
+		graph = new Graph<String>(numColumns);
 		col1Vertices = new ArrayList<String>();
 	}
 	
@@ -19,9 +21,9 @@ public class WaterIceGrid
 	{
 		graph.clear();
 			
-		for(int row = 1; row <= sizeOfGrid; ++row)
+		for(int row = 1; row <= numRows; ++row)
 		{
-			for(int col = 1; col <= sizeOfGrid; ++col)
+			for(int col = 1; col <= numColumns; ++col)
 			{
 				String currentVertex = row + "x" + col;
 				String leftVertex = row + "x" + (col-1);

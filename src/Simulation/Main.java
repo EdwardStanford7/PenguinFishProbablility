@@ -6,15 +6,18 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		int timesToLoop = 10000;
+		int timesToLoop = 1000;
 		
-		WaterIceGrid grid = new WaterIceGrid(5);
+		WaterIceGrid grid = new WaterIceGrid(42, 49);
 		
 		ArrayList<Character> data = new ArrayList<Character>();
 		
-		for(int i = 1; i <= timesToLoop; ++i)
+		for(int i = 0; i < timesToLoop; ++i)
 		{
-			System.out.println(i + "th simulation");
+			if(i % 10 == 0 && i <= timesToLoop - 10)
+			{
+				System.out.println("running simulations " + (i+1) + "-" + (i+10));
+			}
 			data.add(runSimulation(grid));
 		}
 		
@@ -44,10 +47,10 @@ public class Main
 	
 	private static void analyzeData(ArrayList<Character> data)
 	{
-		double numA = 0;
-		double numB = 0;
-		double numC = 0;
-		double numD = 0;
+		int numA = 0;
+		int numB = 0;
+		int numC = 0;
+		int numD = 0;
 		
 		for(int i = 0; i < data.size(); ++i)
 		{
@@ -69,9 +72,11 @@ public class Main
 			}
 		}
 		
-		System.out.println("The probability of just the fish having a path is " + (int) ((numA/data.size()) * 100) + "%");
-		System.out.println("The probability of just the penguin having a path is " + (int) ((numB/data.size()) * 100) + "%");
-		System.out.println("The probability of both the fish and the penguin having a path is " + (int) ((numC/data.size()) * 100) + "%");
-		System.out.println("The probability of neither the fish or the penguin having a path is " + (int) ((numD/data.size()) * 100) + "%");
+		
+		System.out.println("\nFor " + data.size() + " simulations: ");
+		System.out.println("The fish was able to make it across " + numA + " times.");
+		System.out.println("The penguin was able to make it across " + numB + " times.");
+		System.out.println("Both the fish and the penguin were able to make it across " + numC + " times.");
+		System.out.println("Neither the fish nor the penguin were able to make it across " + numD + " times.");
 	}
 }

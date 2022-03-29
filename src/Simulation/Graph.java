@@ -8,14 +8,14 @@ public class Graph<T>
 {
 	// the graph -- a set of vertices (String name mapped to Vertex instance)
 	private HashMap<T, Vertex> vertices;
-	private int sizeOfGrid;
+	private int numColumns;
 
 	/**
 	 * Constructs an empty graph.
 	 */
-	public Graph(int sizeOfGrid) 
+	public Graph(int numColumns) 
 	{
-		this.sizeOfGrid = sizeOfGrid;
+		this.numColumns = numColumns;
 		vertices = new HashMap<T, Vertex>();
 	}
 
@@ -162,7 +162,7 @@ public class Graph<T>
 				continue;
 			}
 			
-			if(vertices.get(vertex).column == sizeOfGrid)
+			if(vertices.get(vertex).column == numColumns)
 			{
 				return true;
 			}
