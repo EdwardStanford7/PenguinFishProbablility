@@ -48,7 +48,7 @@ public class WaterIceGrid
 					return true;
 				}
 				
-				HashSet<String> visitedSquares = new HashSet<String>();
+				HashSet<Pair<Integer, Integer>> visitedSquares = new HashSet<Pair<Integer, Integer>>();
 				
 				if(isPath(row, 0, visitedSquares))
 				{
@@ -71,7 +71,7 @@ public class WaterIceGrid
 					return true;
 				}
 				
-				HashSet<String> visitedSquares = new HashSet<String>();
+				HashSet<Pair<Integer, Integer>> visitedSquares = new HashSet<Pair<Integer, Integer>>();
 				
 				if(isPath(row, 0, visitedSquares))
 				{
@@ -83,9 +83,9 @@ public class WaterIceGrid
 		return false;
 	}
 	
-	private boolean isPath(int row, int col, HashSet<String> visitedSquares)
+	private boolean isPath(int row, int col, HashSet<Pair<Integer, Integer>> visitedSquares)
 	{
-		visitedSquares.add(row + "x" + col);
+		visitedSquares.add(new Pair<Integer, Integer>(row, col));
 		
 		if(col == numColumns-1)
 		{
@@ -94,7 +94,7 @@ public class WaterIceGrid
 				
 		if(row != 0)
 		{
-			if(! visitedSquares.contains((row-1) + "x" + col))
+			if(! visitedSquares.contains(new Pair<Integer, Integer>((row-1), col)));
 			{
 				if(grid.get(row).get(col) == grid.get(row-1).get(col))
 				{
@@ -108,7 +108,7 @@ public class WaterIceGrid
 		
 		if(row != numRows-1)
 		{
-			if(! visitedSquares.contains((row+1) + "x" + col))
+			if(! visitedSquares.contains(new Pair<Integer, Integer>((row+1), col)));
 			{
 				if(grid.get(row).get(col) == grid.get(row+1).get(col))
 				{
@@ -122,7 +122,7 @@ public class WaterIceGrid
 		
 		if(col != 0)
 		{
-			if(! visitedSquares.contains(row + "x" + (col-1)))
+			if(! visitedSquares.contains(new Pair<Integer, Integer>(row, (col-1))));
 			{
 				if(grid.get(row).get(col) == grid.get(row).get(col-1))
 				{
@@ -134,7 +134,7 @@ public class WaterIceGrid
 			}
 		}
 		
-		if(! visitedSquares.contains(row + "x" + (col+1)))
+		if(! visitedSquares.contains(new Pair<Integer, Integer>(row, (col+1))));
 		{
 			if(grid.get(row).get(col) == grid.get(row).get(col+1))
 			{
@@ -146,5 +146,49 @@ public class WaterIceGrid
 		}
 		
 		return false;
+	}
+	
+	private class Pair<A, B> 
+	{
+	    private A first;
+	    private B second;
+
+	    public Pair(A first, B second) 
+	    {
+	        super();
+	        this.first = first;
+	        this.second = second;
+	    }
+
+	    public int hashCode() 
+	    {
+	        int hashFirst = first != null ? first.hashCode() : 0;
+	        int hashSecond = second != null ? second.hashCode() : 0;
+
+	        return (hashFirst + hashSecond) * hashSecond + hashFirst;
+	    }
+
+	    public boolean equals(Object other) 
+	    {
+	        if (other instanceof Pair) 
+	        {
+	            @SuppressWarnings("rawtypes")
+				Pair otherPair = (Pair) other;
+	            return 
+	            ((  this.first == otherPair.first ||
+	                ( this.first != null && otherPair.first != null &&
+	                  this.first.equals(otherPair.first))) &&
+	             (  this.second == otherPair.second ||
+	                ( this.second != null && otherPair.second != null &&
+	                  this.second.equals(otherPair.second))) );
+	        }
+
+	        return false;
+	    }
+
+	    public String toString()
+	    { 
+	           return "(" + first + ", " + second + ")"; 
+	    }
 	}
 }

@@ -8,7 +8,7 @@ public class Main
 	{
 		int timesToLoop = 100000;
 		
-		WaterIceGrid grid = new WaterIceGrid(42, 49);
+		WaterIceGrid grid = new WaterIceGrid(100, 100);
 		
 		ArrayList<Character> data = new ArrayList<Character>();
 		
