@@ -46,15 +46,19 @@ public class WaterIceGrid extends Thread
 				{
 					data.add('c');
 				}
-				
-				data.add('a');
+				else
+				{
+					data.add('a');
+				}
 			}
 			else if(isIcePath())
 			{
 				data.add('b');
 			}
-			
-			data.add('d');
+			else
+			{
+				data.add('d');
+			}
 		}
 	}
 	

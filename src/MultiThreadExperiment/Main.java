@@ -6,13 +6,13 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		int timesToLoop = 1000000;
+		int timesToLoop = 10000000;
 		int numThreads = 10;
 		ArrayList<WaterIceGrid> allThreads = new ArrayList<WaterIceGrid>();		
 		
 		for(int i = 0; i < numThreads; ++i)
 		{
-			allThreads.add(new WaterIceGrid(100, 100, timesToLoop/numThreads));
+			allThreads.add(new WaterIceGrid(42, 49, timesToLoop/numThreads));
 			allThreads.get(i).start();
 		}
 		
@@ -23,7 +23,9 @@ public class Main
 			try 
 			{
 				allThreads.get(i).join();
-			} catch (InterruptedException e) {}
+			} 
+			catch (InterruptedException e) {}
+			
 			for(char dataPiece: allThreads.get(i).getData())
 			{
 				data.add(dataPiece);
@@ -54,7 +56,7 @@ public class Main
 			{
 				numC++;
 			}
-			else
+			else if((data.get(i) == 'd'))
 			{
 				numD++;
 			}
