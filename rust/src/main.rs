@@ -5,6 +5,7 @@
 use rand::Rng;
 use std::collections::HashSet;
 use std::hash::Hash;
+use std::io::{self, Write};
 use std::iter;
 
 /*
@@ -20,6 +21,7 @@ const PAD_COLS: usize = COLS + 2;
 // Number of iterations to run
 const NUM_ITERS: usize = 1000000;
 // Number of steps to display progress
+// (Should be a divisor of NUM_ITERS)
 const PROGRESS_STEP: usize = 1000;
 
 /*
@@ -105,19 +107,27 @@ impl Grid {
 
 fn main() {
     println!("Running {} iterations for {} x {} grids", NUM_ITERS, ROWS, COLS);
-    // println!("Example grid: {:?}", Grid::new_random().0);
-
     let mut friendly: usize = 0;
-    for i in 0..NUM_ITERS {
-        if i % PROGRESS_STEP == 0 {
-            println!("Running iterations {}-{}...", i, i + PROGRESS_STEP - 1);
+    for epoch in 0..(NUM_ITERS / PROGRESS_STEP) {
+        print!(
+            "Running iterations {}-{}...",
+            epoch * PROGRESS_STEP,
+            (epoch + 1) * PROGRESS_STEP - 1,
+        );
+        io::stdout().flush().unwrap();
+
+        let mut new_friendly: usize = 0;
+        for _ in 0..PROGRESS_STEP {
+            let grid = Grid::new_random();
+            if grid.fish_friendly() {
+                new_friendly += 1;
+            }
         }
-        let grid = Grid::new_random();
-        if grid.fish_friendly() {
-            friendly += 1;
-        }
+        println!(" {} friendly", new_friendly);
+        friendly += new_friendly;
     }
 
+    println!("=== Results for {} x {} grids ===", ROWS, COLS);
     println!(
         "The fish can swim across in {}/{} cases ({:.3}%).",
         friendly,
