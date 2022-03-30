@@ -1,22 +1,64 @@
-package arrayListImplementation;
+package MultiThreadExperiment;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class WaterIceGrid 
+public class WaterIceGrid extends Thread
 {
 	private int numRows;
 	private int numColumns;
+	int numIterations;
 	// Boolean value for isIce. True means square is ice, false means square is water.
 	private ArrayList<ArrayList<Boolean>> grid;
+	ArrayList<Character> data;
 	
-	public WaterIceGrid(int numRows, int numColumns)
+	public WaterIceGrid(int numRows, int numColumns, int numIterations)
 	{
 		this.numRows = numRows;
 		this.numColumns = numColumns;
+		this.numIterations = numIterations;
+		this.data = new ArrayList<Character>();
 	}
 	
-	public void buildRandomGrid()
+	/**
+	 * Gets the data from the simulations performed by this thread.
+	 * @return an ArrayList of the data from all the simulations.
+	 */
+	public ArrayList<Character> getData()
+	{
+		return data;
+	}
+	
+	@Override
+	public void run()
+	{
+		for(int i = 0; i < numIterations; ++i)
+		{
+			if(i % 1000 == 0)
+			{
+				System.out.println("Simulation " + (i+1));
+			}
+			buildRandomGrid();
+			
+			if(isWaterPath())
+			{
+				if(isIcePath())
+				{
+					data.add('c');
+				}
+				
+				data.add('a');
+			}
+			else if(isIcePath())
+			{
+				data.add('b');
+			}
+			
+			data.add('d');
+		}
+	}
+	
+	private void buildRandomGrid()
 	{	
 		grid = new ArrayList<ArrayList<Boolean>>();
 		
@@ -37,7 +79,7 @@ public class WaterIceGrid
 		}
 	}
 	
-	public boolean isWaterPath()
+	private boolean isWaterPath()
 	{
 		for(int row = 0; row < grid.size(); ++row)
 		{
@@ -60,7 +102,7 @@ public class WaterIceGrid
 		return false;
 	}
 	
-	public boolean isIcePath()
+	private boolean isIcePath()
 	{
 		for(int row = 0; row < grid.size(); ++row)
 		{
