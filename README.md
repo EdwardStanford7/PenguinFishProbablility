@@ -12,6 +12,6 @@ To clarify, diagonal moves aren't allowed. The penguin can't walk diagonally or 
 
 ## To compile and run
 
-To compile: `javac src/Simulation/*.java`
+To compile: `javac src/MultiThreadExperiment/*.java`
 
-To run: `java -cp src Simulation.Main`
+To run: `java -cp src MultiThreadExperiment.Main`
