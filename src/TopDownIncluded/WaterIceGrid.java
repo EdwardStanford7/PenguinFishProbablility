@@ -42,114 +42,53 @@ public class WaterIceGrid extends Thread
 			
 			boolean penguinTopDown = isPath(true, true);
 			boolean penguinLeftRight = isPath(true, false);
-			boolean FishTopDown = isPath(false, true);
-			boolean FishLeftRight = isPath(false, false);
+			boolean fishTopDown = isPath(false, true);
+			boolean fishLeftRight = isPath(false, false);
 
 			if(penguinTopDown)
 			{
 				if(penguinLeftRight)
 				{
-					if(FishTopDown)
-					{
-						if(FishLeftRight)
-						{
-							data.add(1);
-						}
-						else
-						{
-							data.add(2);
-						}
-					}
-					else
-					{
-						if(FishLeftRight)
-						{
-							data.add(3);
-						}
-						else
-						{
-							data.add(4);
-						}
-					}
+					data.add(1);
+				}
+				else if(fishTopDown)
+				{
+					data.add(2);
 				}
 				else
 				{
-					if(FishTopDown)
-					{
-						if(FishLeftRight)
-						{
-							data.add(5);
-						}
-						else
-						{
-							data.add(6);
-						}
-					}
-					else
-					{
-						if(FishLeftRight)
-						{
-							data.add(7);
-						}
-						else
-						{
-							data.add(8);
-						}
-					}
+					data.add(3);
 				}
+			}
+			else if(penguinLeftRight)
+			{
+				if(fishLeftRight)
+				{
+					data.add(4);
+				}
+				else
+				{
+					data.add(5);
+				}
+			}
+			else if(fishTopDown)
+			{
+				if(fishLeftRight)
+				{
+					data.add(6);
+				}
+				else
+				{
+					data.add(7);
+				}
+			}
+			else if(fishLeftRight)
+			{
+				data.add(8);
 			}
 			else
 			{
-				if(penguinLeftRight)
-				{
-					if(FishTopDown)
-					{
-						if(FishLeftRight)
-						{
-							data.add(9);
-						}
-						else
-						{
-							data.add(10);
-						}
-					}
-					else
-					{
-						if(FishLeftRight)
-						{
-							data.add(11);
-						}
-						else
-						{
-							data.add(12);
-						}
-					}
-				}
-				else
-				{
-					if(FishTopDown)
-					{
-						if(FishLeftRight)
-						{
-							data.add(13);
-						}
-						else
-						{
-							data.add(14);
-						}
-					}
-					else
-					{
-						if(FishLeftRight)
-						{
-							data.add(15);
-						}
-						else
-						{
-							data.add(16);
-						}
-					}
-				}
+				data.add(9);
 			}
 		}
 	}

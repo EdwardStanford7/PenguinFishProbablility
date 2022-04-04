@@ -6,13 +6,15 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		int timesToLoop = 100000;
+		int timesToLoop = 1000000;
 		int numThreads = 10;
+		int numRows = 100;
+		int numColumns = 100;
 		ArrayList<WaterIceGrid> allThreads = new ArrayList<WaterIceGrid>();		
 		
 		for(int i = 0; i < numThreads; ++i)
 		{
-			allThreads.add(new WaterIceGrid(10, 1, timesToLoop/numThreads));
+			allThreads.add(new WaterIceGrid(numRows, numColumns, timesToLoop/numThreads));
 			allThreads.get(i).start();
 		}
 		
@@ -32,10 +34,10 @@ public class Main
 			}
 		}
 			
-		analyzeData(data);
+		analyzeData(data, numRows, numColumns);
 	}
 	
-	private static void analyzeData(ArrayList<Integer> data)
+	private static void analyzeData(ArrayList<Integer> data, int numRows, int numColumns)
 	{
 		int one = 0;
 		int two = 0;
@@ -46,13 +48,6 @@ public class Main
 		int seven = 0;
 		int eight = 0;
 		int nine = 0;
-		int ten = 0;
-		int eleven = 0;
-		int twelve = 0;
-		int thirteen = 0;
-		int fourteen = 0;
-		int fifteen = 0;
-		int sixteen = 0;
 
 		for(int i = 0; i < data.size(); ++i)
 		{
@@ -84,32 +79,18 @@ public class Main
 				continue;
 			case 9:
 				nine++;
-				continue;
-			case 10:
-				ten++;
-				continue;
-			case 11:
-				eleven++;
-				continue;
-			case 12:
-				twelve++;
-				continue;
-			case 13:
-				thirteen++;
-				continue;
-			case 14:
-				fourteen++;
-				continue;
-			case 15:
-				fifteen++;
-				continue;
-			case 16:
-				sixteen++;
 			}
 		}
 		
-		System.out.println("\nFor " + data.size() + " simulations: ");
-		System.out.println(one + two + three + four + five + six + seven + eight + nine + ten + eleven + twelve + thirteen + fourteen + fifteen + sixteen);
-		System.out.println(one + ", " + two + ", " + three + ", " + four + ", " + five + ", " + six + ", " + seven + ", " + eight + ", " + nine + ", " + ten + ", " + eleven + ", " + twelve + ", " + thirteen + ", " + fourteen + ", " + fifteen + ", " + sixteen);
+		System.out.println("\nFor " + data.size() + " simulations on a " + numRows + "x" + numColumns + " grid:");
+		System.out.println("The penguin made it both directions and the fish couldn't cross at all " + one + " times");
+		System.out.println("The penguin and the fish made it top-down " + two + " times");
+		System.out.println("The penguin made it top-down and the fish couldn't cross at all " + three + " times");
+		System.out.println("The penguin and the fish made it left-right " + four + " times");
+		System.out.println("The penguin made it left-right and the fish couldn't cross at all " + five + " times");
+		System.out.println("The penguin couldn't cross at all and the fish made it both directions " + six + " times");
+		System.out.println("The penguin couldn't cross at all and the fish made it top-down " + seven + " times");
+		System.out.println("The penguin couldn't cross at all and the fish made it left-right " + eight + " times");
+		System.out.println("The penguin and the fish couldn't cross at all " + nine + " times");
 	}
 }
