@@ -4,15 +4,26 @@ import java.util.ArrayList;
 
 public class Main 
 {
+	/**
+	 * Arguments:
+	 * arg1: number of rows
+	 * arg2: number of columns
+	 * arg3: number of simulations
+	 * arg4: number of threads (must be an even divisor of number of simulations)
+	 * @param args
+	 */
 	public static void main(String[] args)
 	{
-		int timesToLoop = 10000000;
-		int numThreads = 10;
+		int numRows = Integer.valueOf(args[0]);
+		int numColumns = Integer.valueOf(args[1]);
+		int timesToLoop = Integer.valueOf(args[2]);
+		int numThreads = Integer.valueOf(args[3]);
+		
 		ArrayList<WaterIceGrid> allThreads = new ArrayList<WaterIceGrid>();		
 		
 		for(int i = 0; i < numThreads; ++i)
 		{
-			allThreads.add(new WaterIceGrid(42, 49, timesToLoop/numThreads));
+			allThreads.add(new WaterIceGrid(numRows, numColumns, timesToLoop/numThreads));
 			allThreads.get(i).start();
 		}
 		
